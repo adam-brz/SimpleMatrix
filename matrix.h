@@ -2,6 +2,7 @@
 #define MATRIX_H
 
 #include <cstring>
+#include <cmath>
 #include <stdint.h>
 #include <initializer_list>
 
@@ -19,7 +20,7 @@ public:
     virtual ~Matrix();
 
     T determinant() const;
-    Matrix removeRowAndColumn(uint8_t row, uint8_t column);
+    Matrix removeRowAndColumn(uint8_t row, uint8_t column) const;
 
     T get(uint8_t row, uint8_t column) const;
 
@@ -93,20 +94,39 @@ Matrix<T>::~Matrix()
 template <typename T>
 T Matrix<T>::determinant() const
 {
-    T sum = 0;
+    if(rowCount == 1 && columnCount == 1)
+        return matrix[0][0];
+
+    T sum = 0;   
 
     for(int i = 0; i < columnCount; ++i)
     {
-        sum += matrix[0][i];
+        sum += matrix[0][i] * pow(-1, i) * removeRowAndColumn(0, i).determinant();
     }
+
+    return sum;
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column)
+Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 {
     Matrix result(rowCount - 1, columnCount - 1);
+    uint8_t rowOmmited, columnOmmited;
 
+    rowOmmited = 0;
+    for(int i = 0; i < result.getRowCount(); ++i)
+    {
+        rowOmmited = rowOmmited || (row == i);
+        columnOmmited = 0;
 
+        for(int j = 0; j < result.getColumnCount(); ++j)
+        {
+            columnOmmited = columnOmmited || (column == j);
+            result.matrix[i][j] = matrix[i + rowOmmited][j + columnOmmited];
+        }
+    }
+
+    return result;
 }
 
 template <typename T>

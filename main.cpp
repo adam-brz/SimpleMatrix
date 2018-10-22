@@ -25,14 +25,14 @@ int main(int argc, char *argv[])
     w.setWindowTitle(PROGRAM_NAME);
     w.show();
 
-    Matrix<int> matrix = {{1, 2, 3},
-                          {4, 5, 6}};
+    Matrix<int> matrix = {{1, 0, 0, 0, 0},
+                          {0, 1, 0, 0, 0},
+                          {0, 0, 1, 0, 0},
+                          {0, 0, 0, 1, 0},
+                          {0, 0, 0, 0, 1}
+                         };
 
-    qDebug() << matrix.getColumnCount();
-    qDebug() << matrix.getRowCount();
-    qDebug() << matrix.get(1,0) << "\n";
-
-    printMatrix(matrix);
-
+    //printMatrix(matrix.removeRowAndColumn(2, 0));
+    qDebug() << matrix.determinant();
     return 0;//a.exec();
 }
