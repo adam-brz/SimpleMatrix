@@ -21,18 +21,20 @@ void printMatrix(const Matrix<int> &matrix)
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    MainWindow w;
+    /*MainWindow w;
     w.setWindowTitle(PROGRAM_NAME);
-    w.show();
+    w.show();*/
 
-    Matrix<int> matrix = {{1, 0, 0, 0, 0},
-                          {0, 1, 0, 0, 0},
-                          {0, 0, 1, 0, 0},
-                          {0, 0, 0, 1, 0},
-                          {0, 0, 0, 0, 1}
+    Matrix<int> matrix = {{1, 3},
+                          {2, 4}
                          };
 
-    //printMatrix(matrix.removeRowAndColumn(2, 0));
-    qDebug() << matrix.determinant();
+    Matrix<int> mat2 = {{5, 7},
+                        {6, 8}
+                       };
+
+    printMatrix(matrix * mat2);
+
+    //qDebug() << matrix.determinant();
     return 0;//a.exec();
 }
