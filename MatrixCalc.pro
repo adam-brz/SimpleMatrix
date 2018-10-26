@@ -28,7 +28,8 @@ SOURCES += \
         main.cpp \
         mainwindow.cpp \
     Tests/testmain.cpp \
-    Tests/catch_test.cpp
+    Tests/catch_test.cpp \
+    Tests/Matrix/determinant_test.cpp
 
 HEADERS += \
         mainwindow.h \
