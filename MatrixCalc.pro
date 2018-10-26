@@ -35,7 +35,8 @@ HEADERS += \
         mainwindow.h \
     matrix.h \
     Tests/catch.hpp \
-    Tests/debugtoolbox.h
+    Tests/debugtoolbox.h \
+    matrixexception.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin

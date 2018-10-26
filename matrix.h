@@ -1,6 +1,8 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
+#include "matrixexception.h"
+
 #include <cstring>
 #include <cmath>
 #include <stdint.h>
@@ -134,7 +136,10 @@ void Matrix<T>::freeMemory()
 template <typename T>
 T Matrix<T>::determinant() const
 {
-    if(rowCount == 1 && columnCount == 1)
+    if(rowCount != columnCount)
+        throw InvalidDeterminantException();
+
+    if(rowCount == 1)
         return matrix[0][0];
 
     T sum = 0;   

@@ -45,7 +45,10 @@ TEST_CASE("Matrix determinant calculations", "[matrix]") {
 
         Matrix<double> matrix4 = {{1, 3, 2}};
 
-        //REQUIRE_THROWS_AS(matrix1.determinant(), );
+        REQUIRE_THROWS_AS(matrix1.determinant(), InvalidDeterminantException);
+        REQUIRE_THROWS_AS(matrix2.determinant(), InvalidDeterminantException);
+        REQUIRE_THROWS_AS(matrix3.determinant(), InvalidDeterminantException);
+        REQUIRE_THROWS_AS(matrix4.determinant(), InvalidDeterminantException);
     }
 }
 
