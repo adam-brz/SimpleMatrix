@@ -23,6 +23,15 @@ public:
 
     T determinant() const;
 
+    Matrix &operator=(const Matrix &matrix);
+    Matrix &operator=(Matrix &&matrix);
+
+    Matrix operator+(const Matrix &matrix) const;
+    Matrix operator-(const Matrix &matrix) const;
+    Matrix operator*(const Matrix &Matrix) const;
+    Matrix operator*(const T& value) const;
+    Matrix operator-() const;
+
     inline void set(uint8_t row, uint8_t column, const T &value)
     {
         matrix[row][column] = value;
@@ -40,15 +49,23 @@ public:
         return columnCount;
     }
 
-    Matrix &operator=(const Matrix &matrix);
-    Matrix &operator=(Matrix &&matrix);
+    inline bool hasDeterminant() const {
+        return rowCount == columnCount;
+    }
 
-    Matrix operator+(const Matrix &matrix) const;
-    Matrix operator-(const Matrix &matrix) const;
-    Matrix operator*(const Matrix &Matrix) const;
-    Matrix operator*(const T& value) const;
-    Matrix operator-() const;
+    inline bool isInvertible() const {
+        if(hasDeterminant())
+            return determinant() != 0;
+        return false;
+    }
 
+    inline bool canBeMultiplied(const Matrix<T> &matrix) {
+        return this->getColumnCount() == matrix.getRowCount();
+    }
+
+    inline bool canBeMultiplied(const T &) {
+        return true;
+    }
 private:
     void freeMemory();
     void allocMemory();
