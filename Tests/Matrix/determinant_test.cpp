@@ -4,7 +4,7 @@
 #include "matrix.h"
 
 TEST_CASE("Matrix determinant calculations", "[matrix]") {
-    SECTION("Determinant is possible") {
+    SECTION("Possible to determine") {
         double det0 = Matrix<double>({{10}}).determinant();
 
         double det1 = Matrix<double>({{2, 4},
@@ -33,7 +33,7 @@ TEST_CASE("Matrix determinant calculations", "[matrix]") {
 
     }
 
-    SECTION("Impossible to calculate"){
+    SECTION("Impossible to determine"){
         Matrix<double> matrix1 = {{1, 3}};
 
         Matrix<double> matrix2 = {{1, 3, 2},
