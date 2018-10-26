@@ -27,7 +27,8 @@ CONFIG += c++11
 SOURCES += \
         main.cpp \
         mainwindow.cpp \
-    Tests/testmain.cpp
+    Tests/testmain.cpp \
+    Tests/catch_test.cpp
 
 HEADERS += \
         mainwindow.h \
