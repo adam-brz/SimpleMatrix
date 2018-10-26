@@ -20,43 +20,44 @@ public:
     virtual ~Matrix();
 
     T determinant() const;
-    Matrix removeRowAndColumn(uint8_t row, uint8_t column) const;
 
-    void set(uint8_t row, uint8_t column, const T &value)
+    inline void set(uint8_t row, uint8_t column, const T &value)
     {
         matrix[row][column] = value;
     }
 
-    T get(uint8_t row, uint8_t column) const {
+    inline T get(uint8_t row, uint8_t column) const {
         return matrix[row][column];
     }
 
-    uint8_t getRowCount() const {
+    inline uint8_t getRowCount() const {
         return rowCount;
     }
 
-    uint8_t getColumnCount() const {
+    inline uint8_t getColumnCount() const {
         return columnCount;
     }
 
     Matrix &operator=(const Matrix &matrix);
     Matrix &operator=(Matrix &&matrix);
-    Matrix &operator-();
 
     Matrix operator+(const Matrix &matrix) const;
     Matrix operator-(const Matrix &matrix) const;
     Matrix operator*(const Matrix &Matrix) const;
     Matrix operator*(const T& value) const;
+    Matrix operator-() const;
 
 private:
     void freeMemory();
     void allocMemory();
+
+    Matrix removeRowAndColumn(uint8_t row, uint8_t column) const;
 };
 
 template <typename T>
 Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> argList)
 {
-    int i = 0;
+    int i = 0, j;
 
     matrix = new T*[argList.size()];
     rowCount = argList.size();
@@ -66,7 +67,7 @@ Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> argList)
         matrix[i] = new T[columns.size()];
         columnCount = columns.size();
 
-        int j = 0;
+        j = 0;
         for(const auto &value : columns)
         {
             matrix[i][j] = value;
@@ -167,12 +168,14 @@ Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::operator-()
+Matrix<T> Matrix<T>::operator-() const
 {
+    Matrix<T> result(*this);
+
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            set(i , j, -get(i, j));
-    return *(this);
+            result.set(i , j, -get(i, j));
+    return result;
 }
 
 template <typename T>
@@ -205,12 +208,14 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
     T sum;
 
-    for(int i = 0; i < rowCount; ++i) {
+    for(int i = 0; i < rowCount * columnCount; ++i) {
+        int x;
+        x = i - i % columnCount;
         sum = 0;
         for(int j = 0; j < columnCount; ++j) {
-            sum += get(i, j) * matrix.get(j, i);
+            sum += get(x, j) * matrix.get(j, x + i % columnCount);
         }
-        result.set(i, i, sum);
+        result.set(x, x + i % columnCount, sum);
     }
 
     return result;
