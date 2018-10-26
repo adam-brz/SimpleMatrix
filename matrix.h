@@ -206,16 +206,16 @@ template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
 {
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
-    T sum;
 
-    for(int i = 0; i < rowCount * columnCount; ++i) {
-        int x;
-        x = i - i % columnCount;
-        sum = 0;
-        for(int j = 0; j < columnCount; ++j) {
-            sum += get(x, j) * matrix.get(j, x + i % columnCount);
+    T sum;
+    for(int row = 0; row < rowCount; ++row) {
+        for(int column = 0; column < matrix.getColumnCount(); ++column) {
+            sum = 0;
+            for(int i = 0; i < this->getColumnCount(); ++i) {
+                sum += get(row, i) * matrix.get(i, column);
+            }
+            result.set(row, column, sum);
         }
-        result.set(x, x + i % columnCount, sum);
     }
 
     return result;
