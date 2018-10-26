@@ -23,14 +23,15 @@ public:
 
     T determinant() const;
 
-    Matrix &operator=(const Matrix &matrix);
-    Matrix &operator=(Matrix &&matrix);
+    Matrix<T> &operator=(const Matrix<T> &matrix);
+    Matrix<T> &operator=(Matrix<T> &&matrix);
 
-    Matrix operator+(const Matrix &matrix) const;
-    Matrix operator-(const Matrix &matrix) const;
-    Matrix operator*(const Matrix &Matrix) const;
-    Matrix operator*(const T& value) const;
-    Matrix operator-() const;
+    Matrix<T> operator+(const Matrix<T> &matrix) const;
+    Matrix<T> operator-(const Matrix<T> &matrix) const;
+    Matrix<T> operator*(const Matrix<T> &matrix) const;
+    Matrix<T> operator*(const T& value) const;
+    Matrix<T> operator-() const;
+    bool operator==(const Matrix<T> &matrix) const;
 
     inline void set(uint8_t row, uint8_t column, const T &value)
     {
@@ -59,18 +60,23 @@ public:
         return false;
     }
 
-    inline bool canBeMultiplied(const Matrix<T> &matrix) {
+    inline bool canBeMultiplied(const Matrix<T> &matrix) const {
         return this->getColumnCount() == matrix.getRowCount();
     }
 
-    inline bool canBeMultiplied(const T &) {
+    inline bool canBeMultiplied(const T &) const {
         return true;
     }
 private:
     void freeMemory();
     void allocMemory();
 
-    Matrix removeRowAndColumn(uint8_t row, uint8_t column) const;
+    Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
+
+    inline bool hasTheSameSize(const Matrix<T> matrix) const {
+        return this->getRowCount() == matrix.getRowCount() &&
+                this->getColumnCount() == matrix.getColumnCount();
+    }
 };
 
 template <typename T>
@@ -288,6 +294,20 @@ Matrix<T> &Matrix<T>::operator=(Matrix &&matrix)
     }
 
     matrix.matrix = nullptr;
+}
+
+template <typename T>
+bool Matrix<T>::operator==(const Matrix<T> &matrix) const
+{
+    if(!hasTheSameSize(matrix))
+        return false;
+
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            if(this->get(i, j) != matrix.get(i, j))
+                return false;
+
+    return true;
 }
 
 #endif // MATRIX_H
