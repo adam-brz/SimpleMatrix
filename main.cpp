@@ -1,26 +1,9 @@
 #include "mainwindow.h"
 #include <QApplication>
 
-#include <QDebug>
-#include <iostream>
-
-using namespace std;
-
-#include "matrix.h"
+#include "Tests/debugtoolbox.h"
 
 #define PROGRAM_NAME "MatrixCalc"
-
-void printMatrix(const Matrix<int> &matrix)
-{
-    for(uint8_t i = 0; i < matrix.getRowCount(); ++i)
-    {
-        for(uint8_t j = 0; j < matrix.getColumnCount(); ++j)
-        {
-            cout << matrix.get(i, j) << " ";
-        }
-        cout << "\n";
-    }
-}
 
 int main(int argc, char *argv[])
 {
@@ -40,6 +23,5 @@ int main(int argc, char *argv[])
 
     printMatrix(matrix * mat2);
 
-    //qDebug() << matrix.determinant();
     return 0;//a.exec();
 }

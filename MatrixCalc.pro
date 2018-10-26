@@ -26,11 +26,14 @@ CONFIG += c++11
 
 SOURCES += \
         main.cpp \
-        mainwindow.cpp
+        mainwindow.cpp \
+    Tests/testmain.cpp
 
 HEADERS += \
         mainwindow.h \
-    matrix.h
+    matrix.h \
+    Tests/catch.hpp \
+    Tests/debugtoolbox.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
