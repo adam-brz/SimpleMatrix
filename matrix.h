@@ -12,7 +12,8 @@ template <typename T = double> class Matrix
 {
 private:
     T **matrix = nullptr;
-    uint8_t rowCount, columnCount;
+    uint8_t rowCount = 0;
+    uint8_t columnCount = 0;
 
 public:
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
