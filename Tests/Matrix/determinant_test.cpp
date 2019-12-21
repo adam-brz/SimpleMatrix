@@ -50,27 +50,29 @@ TEST_CASE("Matrix determinant calculations", "[matrix]") {
         REQUIRE_THROWS_AS(matrix3.determinant(), InvalidDeterminantException);
         REQUIRE_THROWS_AS(matrix4.determinant(), InvalidDeterminantException);
     }
+}
 
-    SECTION("Checking possibility of calculating determinant") {
-        REQUIRE(Matrix<double>({{10}}).hasDeterminant());
+TEST_CASE("Checking possibility of calculating determinant", "[matrix]")
+{
+    REQUIRE(Matrix<double>({{10}}).hasDeterminant());
 
-        REQUIRE(Matrix<double>({{10 ,4},
-                                {12, 6}}).hasDeterminant());
+    REQUIRE(Matrix<double>({{10 ,4},
+                            {12, 6}}).hasDeterminant());
 
-        REQUIRE(Matrix<double>({{10, 2, 1},
-                                {0, 4, -1},
-                                {0, -4, 1}}).hasDeterminant());
+    REQUIRE(Matrix<double>({{10, 2, 1},
+                            {0, 4, -1},
+                            {0, -4, 1}}).hasDeterminant());
 
 
-        REQUIRE_FALSE(Matrix<double>({{10, 3}}).hasDeterminant());
+    REQUIRE_FALSE(Matrix<double>({{10, 3}}).hasDeterminant());
 
-        REQUIRE_FALSE(Matrix<double>({{10, 1},
-                                      {13, 2},
-                                      {2, 5}}).hasDeterminant());
+    REQUIRE_FALSE(Matrix<double>({{10, 1},
+                                  {13, 2},
+                                  {2, 5}}).hasDeterminant());
 
-        REQUIRE_FALSE(Matrix<double>({{10, 1, 2},
-                                      {19, 17, 1}}).hasDeterminant());
-    }
+    REQUIRE_FALSE(Matrix<double>({{10, 1, 2},
+                                  {19, 17, 1}}).hasDeterminant());
+
 }
 
 #endif
