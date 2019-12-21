@@ -1,4 +1,8 @@
 #include "matrix.h"
+#include "matrixexception.h"
+
+#include <cstring>
+#include <cmath>
 
 template <typename T>
 Matrix<T>::Matrix(const std::initializer_list<std::initializer_list<T>> &argList)

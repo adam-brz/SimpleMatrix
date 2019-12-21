@@ -1,10 +1,6 @@
 #ifndef MATRIX_H
 #define MATRIX_H
 
-#include "matrixexception.h"
-
-#include <cstring>
-#include <cmath>
 #include <stdint.h>
 #include <initializer_list>
 
