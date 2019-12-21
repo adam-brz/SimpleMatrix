@@ -10,4 +10,11 @@ class InvalidDeterminantException : public std::exception
     }
 };
 
+class InvalidMathOperationException : public std::exception
+{
+    virtual const char* what() const noexcept {
+        return "Operands have to be the right size";
+    }
+};
+
 #endif // MATRIXEXCEPTION_H

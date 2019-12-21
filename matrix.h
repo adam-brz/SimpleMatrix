@@ -8,21 +8,24 @@
 #include <stdint.h>
 #include <initializer_list>
 
-template <typename T> class Matrix
+template <typename T = double> class Matrix
 {
 private:
     T **matrix = nullptr;
     uint8_t rowCount, columnCount;
 
 public:
-    Matrix(std::initializer_list<std::initializer_list<T>> argList);
+    Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
     Matrix(uint8_t rowCount, uint8_t columnCount);
     Matrix(const Matrix<T> &matrix);
     Matrix(Matrix<T> &&matrix);
     virtual ~Matrix();
 
+    Matrix<T> getTransposed() const;
+    Matrix<T> getInversed() const;
     T determinant() const;
 
+    Matrix<T> &normalizeValues(int prec = 9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
     Matrix<T> &operator=(Matrix<T> &&matrix);
 
@@ -67,20 +70,25 @@ public:
     inline bool canBeMultiplied(const T &) const {
         return true;
     }
+
+    inline friend Matrix<T> operator*(const T &value, const Matrix<T> &matrix) {
+        return matrix * value;
+    }
 private:
     void freeMemory();
     void allocMemory();
 
     Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
+    inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
 
-    inline bool hasTheSameSize(const Matrix<T> matrix) const {
+    inline bool hasTheSameSize(const Matrix<T> &matrix) const {
         return this->getRowCount() == matrix.getRowCount() &&
                 this->getColumnCount() == matrix.getColumnCount();
     }
 };
 
 template <typename T>
-Matrix<T>::Matrix(std::initializer_list<std::initializer_list<T>> argList)
+Matrix<T>::Matrix(const std::initializer_list<std::initializer_list<T>> &argList)
 {
     int i = 0, j;
 
@@ -114,10 +122,7 @@ template <typename T>
 Matrix<T>::Matrix(const Matrix<T> &matrix) :
     Matrix<T>(matrix.rowCount, matrix.columnCount)
 {
-    for(int i = 0; i < rowCount; ++i)
-    {
-        memcpy(this->matrix[i], matrix.matrix[i], columnCount);
-    }
+    memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
 }
 
 template <typename T>
@@ -125,15 +130,17 @@ void Matrix<T>::allocMemory()
 {
     matrix = new T*[rowCount];
     for(int i = 0; i < rowCount; ++i)
-    {
         matrix[i] = new T[columnCount];
-    }
 }
 
 template <typename T>
-Matrix<T>::Matrix(Matrix<T> &&matrix)
+Matrix<T>::Matrix(Matrix<T> &&matrix) :
+    matrix(matrix.matrix),
+    rowCount(matrix.rowCount),
+    columnCount(matrix.columnCount)
 {
-    this->operator=(matrix);
+    matrix.matrix = nullptr;
+    matrix.rowCount = 0;
 }
 
 template <typename T>
@@ -145,7 +152,7 @@ Matrix<T>::~Matrix()
 template <typename T>
 void Matrix<T>::freeMemory()
 {
-    if(matrix)
+    if(matrix != nullptr)
     {
         for(int i = 0; i < rowCount; ++i)
         {
@@ -154,6 +161,37 @@ void Matrix<T>::freeMemory()
         delete[] matrix;
         matrix = nullptr;
     }
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::getTransposed() const
+{
+    Matrix<T> result(columnCount, rowCount);
+
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            result.set(j, i, this->get(i, j));
+
+    return result;
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::getInversed() const
+{
+    Matrix<T> result(rowCount, columnCount);
+    T det = determinant();
+
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            result.set(i, j, getAlgebraicComplement(i,j));
+
+    return (static_cast<T>(1.0)/det * result.getTransposed());
+}
+
+template <typename T>
+inline T Matrix<T>::getAlgebraicComplement(uint8_t row, uint8_t column) const
+{
+    return pow(-1, row+column) * removeRowAndColumn(row, column).determinant();
 }
 
 template <typename T>
@@ -178,15 +216,13 @@ Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 {
     Matrix result(rowCount - 1, columnCount - 1);
     uint8_t rowOmmited, columnOmmited;
-
     rowOmmited = 0;
-    for(int i = 0; i < result.getRowCount(); ++i)
-    {
+
+    for(int i = 0; i < result.getRowCount(); ++i) {
         rowOmmited = rowOmmited || (row == i);
         columnOmmited = 0;
 
-        for(int j = 0; j < result.getColumnCount(); ++j)
-        {
+        for(int j = 0; j < result.getColumnCount(); ++j) {
             columnOmmited = columnOmmited || (column == j);
             result.matrix[i][j] = matrix[i + rowOmmited][j + columnOmmited];
         }
@@ -196,31 +232,35 @@ Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator-() const
+Matrix<T> &Matrix<T>::normalizeValues(int prec)
 {
-    Matrix<T> result(*this);
+    const double treshold = std::pow(10, -prec);
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            result.set(i , j, -get(i, j));
-    return result;
+            if(std::abs(this->get(i, j)) < treshold)
+                set(i, j, 0);
+
+    return (*this);
 }
 
 template <typename T>
-Matrix<T> Matrix<T>::operator+(const Matrix<T> &matrix) const
+Matrix<T> Matrix<T>::operator-() const
 {
     Matrix<T> result(rowCount, columnCount);
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            result.set(i , j, get(i, j) + matrix.get(i, j));
-
+            result.set(i, j, -get(i, j));
     return result;
 }
 
 template <typename T>
 Matrix<T> Matrix<T>::operator-(const Matrix<T> &matrix) const
 {
+    if(!this->hasTheSameSize(matrix))
+        throw InvalidMathOperationException();
+
     Matrix<T> result(rowCount, columnCount);
 
     for(int i = 0; i < rowCount; ++i)
@@ -231,18 +271,36 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T> &matrix) const
 }
 
 template <typename T>
+Matrix<T> Matrix<T>::operator+(const Matrix<T> &matrix) const
+{
+    if(!this->hasTheSameSize(matrix))
+        throw InvalidMathOperationException();
+
+    Matrix<T> result(rowCount, columnCount);
+
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            result.set(i, j, get(i, j) + matrix.get(i, j));
+
+    return result;
+}
+
+template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
 {
+    if(this->getColumnCount() != matrix.getRowCount())
+        throw InvalidMathOperationException();
+
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
 
-    T sum;
-    for(int row = 0; row < rowCount; ++row) {
+    T tmpSum;
+    for(int row = 0; row < this->getRowCount(); ++row) {
         for(int column = 0; column < matrix.getColumnCount(); ++column) {
-            sum = 0;
+            tmpSum = 0;
             for(int i = 0; i < this->getColumnCount(); ++i) {
-                sum += get(row, i) * matrix.get(i, column);
+                tmpSum += this->get(row, i) * matrix.get(i, column);
             }
-            result.set(row, column, sum);
+            result.set(row, column, tmpSum);
         }
     }
 
@@ -270,11 +328,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &matrix)
    rowCount =  matrix.columnCount;
 
    allocMemory();
-   for(int i = 0; i < rowCount; ++i)
-   {
-       memcpy(this->matrix[i], matrix.matrix[i], columnCount);
-   }
-
+   memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
    return *(this);
 }
 
@@ -286,28 +340,27 @@ Matrix<T> &Matrix<T>::operator=(Matrix &&matrix)
     columnCount = matrix.columnCount;
     rowCount =  matrix.columnCount;
 
-    for(int i = 0; i < rowCount; ++i) {
-        this->matrix[i] = matrix.matrix[i];
-        for(int j = 0; j < columnCount; ++j) {
-            this->matrix[i][j] = matrix.matrix[i][j];
-        }
-    }
-
+    this->matrix = matrix.matrix;
     matrix.matrix = nullptr;
+
+    return (*this);
 }
 
 template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &matrix) const
 {
+    constexpr double MAX_CMP_DELTA = 0.0000000001; // = 10^(-10)
+
     if(!hasTheSameSize(matrix))
         return false;
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            if(this->get(i, j) != matrix.get(i, j))
+            if(std::abs(this->get(i, j) - matrix.get(i, j)) > MAX_CMP_DELTA)
                 return false;
 
     return true;
 }
+
 
 #endif // MATRIX_H

@@ -5,27 +5,12 @@
 
 #define PROGRAM_NAME "MatrixCalc"
 
-#ifndef RUN_TEST
-
 int main(int argc, char *argv[])
 {
     QApplication a(argc, argv);
-    /*MainWindow w;
+    MainWindow w;
     w.setWindowTitle(PROGRAM_NAME);
-    w.show();*/
+    w.show();
 
-    Matrix<int> matrix = {{2,  1, 0},
-                          {3, -2, 1}
-                         };
-
-    Matrix<int> mat2 = {{0, -2},
-                        {1,  3},
-                        {2, -4}
-                       };
-
-    printMatrix(matrix * mat2);
-
-    return 0;//a.exec();
+    return a.exec();
 }
-
-#endif // RUN_TEST

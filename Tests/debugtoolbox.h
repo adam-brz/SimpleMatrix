@@ -6,7 +6,8 @@
 
 using namespace std;
 
-void printMatrix(const Matrix<int> &matrix)
+template <typename T>
+void printMatrix(const Matrix<T> &matrix)
 {
     for(uint8_t i = 0; i < matrix.getRowCount(); ++i)
     {

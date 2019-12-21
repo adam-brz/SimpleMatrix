@@ -24,19 +24,18 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += \
-        main.cpp \
-        mainwindow.cpp \
-    Tests/testmain.cpp \
-    Tests/catch_test.cpp \
-    Tests/Matrix/determinant_test.cpp
+SOURCES += mainwindow.cpp \
+    Tests/Matrix/creation_test.cpp \
+    Widgets/matrixinputwidget.cpp
+
 
 HEADERS += \
         mainwindow.h \
     matrix.h \
     Tests/catch.hpp \
     Tests/debugtoolbox.h \
-    matrixexception.h
+    matrixexception.h \
+    Widgets/matrixinputwidget.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -44,3 +43,26 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 DISTFILES +=
+
+#Tests
+
+contains(DEFINES, RUN_TEST) {
+    SOURCES +=  Tests/testmain.cpp \
+        Tests/catch_test.cpp \
+        Tests/Matrix/determinant_test.cpp \
+        Tests/Matrix/invert_test.cpp \
+        Tests/Matrix/transpose_test.cpp \
+        Tests/Matrix/add_test.cpp \
+        Tests/Matrix/subtract_test.cpp \
+        Tests/Matrix/multiply_test.cpp \
+        Tests/Matrix/reverse_elements_test.cpp \
+        Tests/Matrix/compare_test.cpp
+}
+
+else:contains(DEFINES, RUN_TIME_TEST) {
+    SOURCES += Tests/timetests.cpp
+}
+
+else {
+    SOURCES += main.cpp
+}
