@@ -25,7 +25,7 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
-    }/*
+    }
 
     SECTION("Making copy of empty matrix")
     {
@@ -49,9 +49,9 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
-    }*/
+    }
 
-    /*SECTION("Moving empty matrix")
+    SECTION("Moving empty matrix")
     {
         Matrix<> origin = Matrix<>(0, 0);
         Matrix<> matrix = std::move(origin);
@@ -61,7 +61,7 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
-    }*/
+    }
 }
 
 
