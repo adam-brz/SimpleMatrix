@@ -3,6 +3,13 @@
 
 #include <exception>
 
+class InvalidMatrixSize : public std::exception
+{
+    virtual const char* what() const noexcept {
+        return "Matrix row and column count must be greater than 0.";
+    }
+};
+
 class InvalidDeterminantException : public std::exception
 {
     virtual const char* what() const noexcept {

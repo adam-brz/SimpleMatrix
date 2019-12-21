@@ -12,6 +12,10 @@ private:
     uint8_t columnCount = 0;
 
 public:
+    static bool isValid(const std::initializer_list<std::initializer_list<T>> &argList);
+    static bool isValid(const Matrix<T> &matrix);
+    static bool isValid(uint8_t rowCount, uint8_t columnCount);
+
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
     Matrix(uint8_t rowCount, uint8_t columnCount);
     Matrix(const Matrix<T> &matrix);

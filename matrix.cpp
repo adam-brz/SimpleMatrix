@@ -5,6 +5,38 @@
 #include <cmath>
 
 template <typename T>
+bool Matrix<T>::isValid(const std::initializer_list<
+                              std::initializer_list<T>> &argList)
+{
+    int columnCount;
+
+    if(argList.size() < 1)
+        return false;
+
+    columnCount = *argList.begin();
+    if(columnCount < 1)
+        return false;
+
+    for(const auto& column : argList)
+        if(columnCount != column.size())
+            return false;
+
+    return true;
+}
+
+template <typename T>
+bool Matrix<T>::isValid(const Matrix<T> &matrix)
+{
+    return matrix.getRowCount() > 0 && matrix.getColumnCount() > 0;
+}
+
+template <typename T>
+bool Matrix<T>::isValid(uint8_t rowCount, uint8_t columnCount)
+{
+    return rowCount > 0 && columnCount > 0;
+}
+
+template <typename T>
 Matrix<T>::Matrix(const std::initializer_list<std::initializer_list<T>> &argList)
 {
     int i = 0, j;
@@ -246,6 +278,7 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &matrix)
 
    allocMemory();
    memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
+
    return *(this);
 }
 

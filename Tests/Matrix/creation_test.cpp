@@ -14,6 +14,8 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
+
+        CHECK(Matrix<>::isValid(matrix) == false);
     }
 
     SECTION("Initialization with initializer list")
@@ -25,6 +27,9 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
+
+
+        CHECK(Matrix<>::isValid(matrix) == false);
     }
 
     SECTION("Making copy of empty matrix")
@@ -37,6 +42,8 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
+
+        CHECK(Matrix<>::isValid(matrix) == false);
     }
 
     SECTION("Making copy of empty matrix")
@@ -49,6 +56,8 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
+
+        CHECK(Matrix<>::isValid(matrix) == false);
     }
 
     SECTION("Moving empty matrix")
@@ -61,6 +70,8 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
 
         CHECK(matrix.hasDeterminant() == true);
         CHECK(matrix.isInvertible() == false);
+
+        CHECK(Matrix<>::isValid(matrix) == false);
     }
 }
 
