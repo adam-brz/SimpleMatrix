@@ -27,7 +27,7 @@ public:
     Matrix<T> getInversed() const;
     T determinant() const;
 
-    Matrix<T> &roundToZeroIfNear(T maxDelta = 1E-9);
+    Matrix<T> &roundToZeroIfNear(const T &maxDelta = 1E-9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
     Matrix<T> &operator=(Matrix<T> &&matrix);
 
@@ -99,6 +99,10 @@ private:
 
     Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
+
+    inline bool almostEqual(const T &val1, const T &val2, const T &maxDelta) const {
+        return abs(val1 - val2) < maxDelta;
+    }
 
     inline bool hasTheSameSize(const Matrix<T> &matrix) const {
         return this->getRowCount() == matrix.getRowCount() &&

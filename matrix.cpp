@@ -42,24 +42,24 @@ Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector)
 template <typename T>
 Matrix<T>::Matrix(const std::initializer_list<std::initializer_list<T>> &argList)
 {
-    int i = 0, j;
-
-    matrix = new T*[argList.size()];
     rowCount = argList.size();
+    matrix = new T*[rowCount];
 
-    for(const auto &columns : argList)
+    for(int i = 0; i < rowCount; ++i)
     {
-        matrix[i] = new T[columns.size()];
-        columnCount = columns.size();
+        columnCount = argList.begin()[i].size();
+        matrix[i] = new T[columnCount];
 
-        j = 0;
-        for(const auto &value : columns)
-        {
-            matrix[i][j] = value;
-            ++j;
-        }
-        ++i;
+        for(int j = 0; j < columnCount; ++j)
+            matrix[i][j] = argList.begin()[i].begin()[j];
     }
+}
+
+template <typename T>
+Matrix<T>::Matrix(const Matrix<T> &matrix) :
+    Matrix<T>(matrix.rowCount, matrix.columnCount)
+{
+    memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
 }
 
 template <typename T>
@@ -69,13 +69,6 @@ Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount) :
 {
     allocMemory();
     initCells();
-}
-
-template <typename T>
-Matrix<T>::Matrix(const Matrix<T> &matrix) :
-    Matrix<T>(matrix.rowCount, matrix.columnCount)
-{
-    memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
 }
 
 template <typename T>
@@ -113,15 +106,14 @@ Matrix<T>::~Matrix()
 template <typename T>
 void Matrix<T>::freeMemory()
 {
-    if(matrix != nullptr)
-    {
-        for(int i = 0; i < rowCount; ++i)
-        {
-            delete[] matrix[i];
-        }
-        delete[] matrix;
-        matrix = nullptr;
-    }
+    if(matrix == nullptr)
+        return;
+
+    for(int i = 0; i < rowCount; ++i)
+        delete[] matrix[i];
+
+    delete[] matrix;
+    matrix = nullptr;
 }
 
 template<typename T>
@@ -131,7 +123,7 @@ Matrix<T> Matrix<T>::getTransposed() const
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            result.set(j, i, this->get(i, j));
+            result.set(j, i, get(i, j));
 
     return result;
 }
@@ -144,9 +136,9 @@ Matrix<T> Matrix<T>::getInversed() const
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            result.set(i, j, getAlgebraicComplement(i,j));
+            result.set(i, j, getAlgebraicComplement(i, j));
 
-    return (static_cast<T>(1.0)/det * result.getTransposed());
+    return 1.0/det * result.getTransposed();
 }
 
 template <typename T>
@@ -166,7 +158,7 @@ T Matrix<T>::determinant() const
 
     T sum = 0;
 
-    for(int i = 0; i < columnCount; ++i)
+    for(int i = 0; i < rowCount; ++i)
         sum += matrix[0][i] * pow(-1, i) * removeRowAndColumn(0, i).determinant();
 
     return sum;
@@ -193,11 +185,11 @@ Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::roundToZeroIfNear(T maxDelta)
+Matrix<T> &Matrix<T>::roundToZeroIfNear(const T &maxDelta)
 {
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            if(std::abs(this->get(i, j)) < maxDelta)
+            if(almostEqual(get(i, j), 0, maxDelta))
                 set(i, j, T());
 
     return (*this);
@@ -247,19 +239,21 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &matrix) const
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
 {
-    if(this->getColumnCount() != matrix.getRowCount())
+    if(!canBeMultiplied(matrix))
         throw InvalidMathOperationException();
 
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
-    T tmpSum;
+    T quotientsSum = 0;
 
-    for(int row = 0; row < this->getRowCount(); ++row) {
-        for(int column = 0; column < matrix.getColumnCount(); ++column) {
-            tmpSum = 0;
-            for(int i = 0; i < this->getColumnCount(); ++i) {
-                tmpSum += this->get(row, i) * matrix.get(i, column);
-            }
-            result.set(row, column, tmpSum);
+    for(int row = 0; row < getRowCount(); ++row)
+    {
+        for(int column = 0; column < matrix.getColumnCount(); ++column)
+        {
+            for(int i = 0; i < getColumnCount(); ++i)
+                quotientsSum += get(row, i) * matrix.get(i, column);
+
+            result.set(row, column, quotientsSum);
+            quotientsSum = 0;
         }
     }
 
@@ -316,7 +310,7 @@ bool Matrix<T>::operator==(const Matrix<T> &matrix) const
 
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            if(std::abs(this->get(i, j) - matrix.get(i, j)) > MAX_CMP_DELTA)
+            if(!almostEqual(get(i, j), matrix.get(i, j), MAX_CMP_DELTA))
                 return false;
 
     return true;
