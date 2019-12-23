@@ -46,4 +46,28 @@ TEST_CASE("Multiplying matrixes", "[Matrix]")
     }
 }
 
+TEST_CASE("Multiplying matrixes with single row/column", "[Matrix]")
+{
+    SECTION("Result is scalar")
+    {
+        Matrix<> mat1 = {{1, 0, 1}};
+        Matrix<> mat2 = {{2}, {1}, {0}};
+        Matrix<> expected = {{2}};
+
+        CHECK(mat1 * mat2 == expected);
+    }
+
+    SECTION("Result is vector")
+    {
+        Matrix<> mat1 = {{1, 0, 1},
+                         {1, 1, 0},
+                         {0, 1, 0}};
+
+        Matrix<> mat2 = {{1}, {0}, {1}};
+        Matrix<> expected = {{2}, {1}, {0}};
+
+        CHECK(mat1 * mat2 == expected);
+    }
+}
+
 #endif
