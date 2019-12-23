@@ -59,7 +59,8 @@ template <typename T>
 Matrix<T>::Matrix(const Matrix<T> &matrix) :
     Matrix<T>(matrix.rowCount, matrix.columnCount)
 {
-    memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
+    for(int i = 0; i < rowCount; ++i)
+        memcpy(this->matrix[i], matrix.matrix[i], columnCount*sizeof(T));
 }
 
 template <typename T>
@@ -278,10 +279,12 @@ Matrix<T> &Matrix<T>::operator=(const Matrix &matrix)
    freeMemory();
 
    columnCount = matrix.columnCount;
-   rowCount =  matrix.columnCount;
+   rowCount = matrix.rowCount;
 
    allocMemory();
-   memcpy(this->matrix, matrix.matrix, rowCount*columnCount*sizeof(T));
+
+   for(int i = 0; i < rowCount; ++i)
+       memcpy(this->matrix[i], matrix.matrix[i], columnCount*sizeof(T));
 
    return *(this);
 }
@@ -292,7 +295,7 @@ Matrix<T> &Matrix<T>::operator=(Matrix &&matrix)
     freeMemory();
 
     columnCount = matrix.columnCount;
-    rowCount =  matrix.columnCount;
+    rowCount =  matrix.rowCount;
 
     this->matrix = matrix.matrix;
     matrix.matrix = nullptr;

@@ -64,5 +64,14 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
     }
 }
 
+TEST_CASE("Test construction with reference", "[Matrix]")
+{
+    Matrix<> matrix2 = {{1, 2, 0},
+                       {2, 1, 1},
+                       {0, 1, 0}};
+
+    Matrix<> matrix(matrix2);
+    CHECK(matrix == matrix2);
+}
 
 #endif //RUN_TEST

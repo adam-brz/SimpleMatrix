@@ -24,7 +24,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES +=
+SOURCES += \
+    Tests/Matrix/assign_test.cpp
 
 
 HEADERS += \
