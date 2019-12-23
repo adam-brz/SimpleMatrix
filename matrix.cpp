@@ -259,8 +259,8 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
         throw InvalidMathOperationException();
 
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
-
     T tmpSum;
+
     for(int row = 0; row < this->getRowCount(); ++row) {
         for(int column = 0; column < matrix.getColumnCount(); ++column) {
             tmpSum = 0;

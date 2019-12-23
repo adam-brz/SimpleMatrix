@@ -38,9 +38,25 @@ public:
     Matrix<T> operator+(const Matrix<T> &matrix) const;
     Matrix<T> operator-(const Matrix<T> &matrix) const;
     Matrix<T> operator*(const Matrix<T> &matrix) const;
-    Matrix<T> operator*(const T& value) const;
+    Matrix<T> operator*(const T &value) const;
     Matrix<T> operator-() const;
     bool operator==(const Matrix<T> &matrix) const;
+
+    inline Matrix<T> &operator+=(const Matrix<T> &matrix) const {
+        return *this = *this + matrix;
+    }
+
+    Matrix<T> &operator-=(const Matrix<T> &matrix) const {
+        return *this = *this - matrix;
+    }
+
+    Matrix<T> &operator*=(const Matrix<T> &matrix) const {
+        return *this = *this * matrix;
+    }
+
+    Matrix<T> &operator*=(const T &value) const {
+        return *this = *this * value;
+    }
 
     inline void set(uint8_t row, uint8_t column, const T &value)
     {
