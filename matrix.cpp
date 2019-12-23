@@ -16,6 +16,29 @@ Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
     return result;
 }
 
+template<typename T>
+Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
+{
+    Matrix<T> skew_symmetric = Matrix<>::skewSymmetric(vector);
+
+    return Matrix<>::unitMatrix(3) +
+            skew_symmetric*sin(angle) +
+            skew_symmetric*skew_symmetric*(1-cos(angle));
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector)
+{
+    T x,y,z;
+    x = vector.get(0, 0);
+    y = vector.get(1, 0);
+    z = vector.get(2, 0);
+
+    return {{0, -z, y},
+            {z, 0, -x},
+            {-y, x, 0}};
+}
+
 template <typename T>
 Matrix<T>::Matrix(const std::initializer_list<std::initializer_list<T>> &argList)
 {
@@ -147,29 +170,6 @@ T Matrix<T>::determinant() const
         sum += matrix[0][i] * pow(-1, i) * removeRowAndColumn(0, i).determinant();
 
     return sum;
-}
-
-template<typename T>
-Matrix<T> Matrix<T>::rotate(const Matrix<T> &vector, double angle) const
-{
-    Matrix<T> skew_symmetric = skewSymmetric(vector);
-
-    return *this * (Matrix<>::unitMatrix(3) +
-                    skew_symmetric*sin(angle) +
-                    skew_symmetric*skew_symmetric*(1-cos(angle)));
-}
-
-template<typename T>
-Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector) const
-{
-    T x,y,z;
-    x = vector.get(0, 0);
-    y = vector.get(1, 0);
-    z = vector.get(2, 0);
-
-    return {{0, -z, y},
-            {z, 0, -x},
-            {-y, x, 0}};
 }
 
 template <typename T>
@@ -309,7 +309,7 @@ Matrix<T> &Matrix<T>::operator=(Matrix &&matrix)
 template <typename T>
 bool Matrix<T>::operator==(const Matrix<T> &matrix) const
 {
-    constexpr double MAX_CMP_DELTA = 0.0000000001; // = 10^(-10)
+    constexpr double MAX_CMP_DELTA = 1E-9;
 
     if(!hasTheSameSize(matrix))
         return false;

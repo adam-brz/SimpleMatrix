@@ -14,6 +14,8 @@ private:
 
 public:
     static Matrix<T> unitMatrix(uint8_t size);
+    static Matrix<T> rotationMatrix(const Matrix<T> &vector, double angle);
+    static Matrix<T> skewSymmetric(const Matrix<T> &vector);
 
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
     Matrix(uint8_t rowCount, uint8_t columnCount);
@@ -24,9 +26,6 @@ public:
     Matrix<T> getTransposed() const;
     Matrix<T> getInversed() const;
     T determinant() const;
-
-    Matrix<T> rotate(const Matrix<T> &vector, double angle) const;
-    Matrix<T> skewSymmetric(const Matrix<T> &vector) const;
 
     Matrix<T> &roundToZeroIfNear(T maxDelta = 1E-9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
