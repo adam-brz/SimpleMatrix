@@ -28,7 +28,7 @@ public:
     Matrix<T> rotate(const Matrix<T> &vector, double angle) const;
     Matrix<T> skewSymmetric(const Matrix<T> &vector) const;
 
-    Matrix<T> &normalizeValues(int prec = 9);
+    Matrix<T> &roundToZeroIfNear(T maxDelta = 1E-9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
     Matrix<T> &operator=(Matrix<T> &&matrix);
 

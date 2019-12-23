@@ -193,14 +193,12 @@ Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 }
 
 template <typename T>
-Matrix<T> &Matrix<T>::normalizeValues(int prec)
+Matrix<T> &Matrix<T>::roundToZeroIfNear(T maxDelta)
 {
-    const double treshold = std::pow(10, -prec);
-
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            if(std::abs(this->get(i, j)) < treshold)
-                set(i, j, 0);
+            if(std::abs(this->get(i, j)) < maxDelta)
+                set(i, j, T());
 
     return (*this);
 }
