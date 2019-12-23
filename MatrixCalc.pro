@@ -24,17 +24,14 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += mainwindow.cpp \
-    Widgets/matrixinputwidget.cpp
+SOURCES +=
 
 
 HEADERS += \
-        mainwindow.h \
     matrix.h \
     Tests/catch.hpp \
     Tests/debugtoolbox.h \
-    matrixexception.h \
-    Widgets/matrixinputwidget.h
+    matrixexception.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
