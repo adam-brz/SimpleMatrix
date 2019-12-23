@@ -5,35 +5,14 @@
 #include <cmath>
 
 template <typename T>
-bool Matrix<T>::isValid(const std::initializer_list<
-                              std::initializer_list<T>> &argList)
+Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
 {
-    int columnCount;
+    Matrix<T> result(size, size);
 
-    if(argList.size() < 1)
-        return false;
+    for(int i = 0; i < size; ++i)
+        result.set(i, i, 1);
 
-    columnCount = *argList.begin();
-    if(columnCount < 1)
-        return false;
-
-    for(const auto& column : argList)
-        if(columnCount != column.size())
-            return false;
-
-    return true;
-}
-
-template <typename T>
-bool Matrix<T>::isValid(const Matrix<T> &matrix)
-{
-    return matrix.getRowCount() > 0 && matrix.getColumnCount() > 0;
-}
-
-template <typename T>
-bool Matrix<T>::isValid(uint8_t rowCount, uint8_t columnCount)
-{
-    return rowCount > 0 && columnCount > 0;
+    return result;
 }
 
 template <typename T>
@@ -65,6 +44,7 @@ Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount) :
     columnCount(columnCount)
 {
     allocMemory();
+    initCells();
 }
 
 template <typename T>
@@ -80,6 +60,14 @@ void Matrix<T>::allocMemory()
     matrix = new T*[rowCount];
     for(int i = 0; i < rowCount; ++i)
         matrix[i] = new T[columnCount];
+}
+
+template<typename T>
+void Matrix<T>::initCells()
+{
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            matrix[i][j] = T();
 }
 
 template <typename T>

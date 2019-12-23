@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += mainwindow.cpp \
-    Tests/Matrix/creation_test.cpp \
     Widgets/matrixinputwidget.cpp
 
 
@@ -49,6 +48,7 @@ DISTFILES +=
 contains(DEFINES, RUN_TEST) {
     SOURCES +=  Tests/testmain.cpp \
         Tests/catch_test.cpp \
+        Tests/Matrix/creation_test.cpp \
         Tests/Matrix/determinant_test.cpp \
         Tests/Matrix/invert_test.cpp \
         Tests/Matrix/transpose_test.cpp \

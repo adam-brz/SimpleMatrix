@@ -12,9 +12,7 @@ private:
     uint8_t columnCount = 0;
 
 public:
-    static bool isValid(const std::initializer_list<std::initializer_list<T>> &argList);
-    static bool isValid(const Matrix<T> &matrix);
-    static bool isValid(uint8_t rowCount, uint8_t columnCount);
+    static Matrix<T> unitMatrix(uint8_t size);
 
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
     Matrix(uint8_t rowCount, uint8_t columnCount);
@@ -78,6 +76,7 @@ public:
 private:
     void freeMemory();
     void allocMemory();
+    void initCells();
 
     Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
