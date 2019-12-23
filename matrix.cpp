@@ -19,9 +19,9 @@ Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
 template<typename T>
 Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
 {
-    Matrix<T> skew_symmetric = Matrix<>::skewSymmetric(vector);
+    Matrix<T> skew_symmetric = Matrix<T>::skewSymmetric(vector);
 
-    return Matrix<>::unitMatrix(3) +
+    return Matrix<T>::unitMatrix(3) +
             skew_symmetric*sin(angle) +
             skew_symmetric*skew_symmetric*(1-cos(angle));
 }
