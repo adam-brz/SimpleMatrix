@@ -25,7 +25,6 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += mainwindow.cpp \
-    Tests/Matrix/rotate_test.cpp \
     Widgets/matrixinputwidget.cpp
 
 
@@ -57,6 +56,7 @@ contains(DEFINES, RUN_TEST) {
         Tests/Matrix/subtract_test.cpp \
         Tests/Matrix/multiply_test.cpp \
         Tests/Matrix/reverse_elements_test.cpp \
+        Tests/Matrix/rotate_test.cpp \
         Tests/Matrix/compare_test.cpp
 }
 

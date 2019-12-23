@@ -3,6 +3,7 @@
 
 #include <cstring>
 #include <cmath>
+#include <map>
 
 template <typename T>
 Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
@@ -149,33 +150,26 @@ T Matrix<T>::determinant() const
 }
 
 template<typename T>
-Matrix<T> &Matrix<T>::rotate(Axis axis, double angle)
+Matrix<T> Matrix<T>::rotate(const Matrix<T> &vector, double angle) const
 {
-    double sina = sin(angle);
-    double cosa = cos(angle);
+    Matrix<T> skew_symmetric = skewSymmetric(vector);
 
-    switch (axis)
-    {
-    case Axis::X:
-        *this *= Matrix<T>({{1, 0, 0},
-                            {0, cosa, -sina},
-                            {0, sina, cosa}
-                           });
-    case Axis::Y:
-        *this *= Matrix<T>({{cosa,  0, sina},
-                            {sina,  1, 0},
-                            {-sina, 0, cosa}
-                           });
-        break;
-    case Axis::Z:
-        *this *= Matrix<T>({{cosa, -sina, 0},
-                            {sina, cosa,  0},
-                            {0   ,    0,  1}
-                           });
-        break;
-    }
+    return *this * (Matrix<>::unitMatrix(3) +
+                    skew_symmetric*sin(angle) +
+                    skew_symmetric*skew_symmetric*(1-cos(angle)));
+}
 
-    return *this;
+template<typename T>
+Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector) const
+{
+    T x,y,z;
+    x = vector.get(0, 0);
+    y = vector.get(1, 0);
+    z = vector.get(2, 0);
+
+    return {{0, -z, y},
+            {z, 0, -x},
+            {-y, x, 0}};
 }
 
 template <typename T>

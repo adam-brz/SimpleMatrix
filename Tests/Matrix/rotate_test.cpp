@@ -8,5 +8,5 @@ TEST_CASE("Rotate matrix in x axis", "[Matrix]")
                          {0, 0, -1},
                          {0, 1, 0}};
 
-    CHECK(matrix.rotate(Axis::X, 3.1415/2) == expected);
+    CHECK(matrix.rotate(Axis<>::X(), M_PI/2.0) == expected);
 }

@@ -4,12 +4,8 @@
 #include <stdint.h>
 #include <initializer_list>
 
-enum class Axis
-{
-    X, Y, Z
-};
-
-template <typename T = double> class Matrix
+template <typename T = double>
+class Matrix
 {
 private:
     T **matrix = nullptr;
@@ -29,7 +25,8 @@ public:
     Matrix<T> getInversed() const;
     T determinant() const;
 
-    Matrix<T> &rotate(Axis axis, double angle);
+    Matrix<T> rotate(const Matrix<T> &vector, double angle) const;
+    Matrix<T> skewSymmetric(const Matrix<T> &vector) const;
 
     Matrix<T> &normalizeValues(int prec = 9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
@@ -42,19 +39,19 @@ public:
     Matrix<T> operator-() const;
     bool operator==(const Matrix<T> &matrix) const;
 
-    inline Matrix<T> &operator+=(const Matrix<T> &matrix) const {
+    inline Matrix<T> &operator+=(const Matrix<T> &matrix) {
         return *this = *this + matrix;
     }
 
-    Matrix<T> &operator-=(const Matrix<T> &matrix) const {
+    inline Matrix<T> &operator-=(const Matrix<T> &matrix) {
         return *this = *this - matrix;
     }
 
-    Matrix<T> &operator*=(const Matrix<T> &matrix) const {
+    inline Matrix<T> &operator*=(const Matrix<T> &matrix) {
         return *this = *this * matrix;
     }
 
-    Matrix<T> &operator*=(const T &value) const {
+    inline Matrix<T> &operator*=(const T &value) {
         return *this = *this * value;
     }
 
@@ -107,6 +104,23 @@ private:
     inline bool hasTheSameSize(const Matrix<T> &matrix) const {
         return this->getRowCount() == matrix.getRowCount() &&
                 this->getColumnCount() == matrix.getColumnCount();
+    }
+};
+
+template <typename T = double>
+class Axis
+{
+public:
+    static const Matrix<T> X() {
+        return {{1}, {0}, {0}};
+    }
+
+    static const Matrix<T> Y() {
+        return {{0}, {1}, {0}};
+    }
+
+    static const Matrix<T> Z() {
+        return {{0}, {0}, {1}};
     }
 };
 
