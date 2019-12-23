@@ -25,6 +25,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 CONFIG += c++11
 
 SOURCES += mainwindow.cpp \
+    Tests/Matrix/rotate_test.cpp \
     Widgets/matrixinputwidget.cpp
 
 

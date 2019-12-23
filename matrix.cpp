@@ -148,6 +148,36 @@ T Matrix<T>::determinant() const
     return sum;
 }
 
+template<typename T>
+Matrix<T> &Matrix<T>::rotate(Axis axis, double angle)
+{
+    double sina = sin(angle);
+    double cosa = cos(angle);
+
+    switch (axis)
+    {
+    case Axis::X:
+        *this *= Matrix<T>({{1, 0, 0},
+                            {0, cosa, -sina},
+                            {0, sina, cosa}
+                           });
+    case Axis::Y:
+        *this *= Matrix<T>({{cosa,  0, sina},
+                            {sina,  1, 0},
+                            {-sina, 0, cosa}
+                           });
+        break;
+    case Axis::Z:
+        *this *= Matrix<T>({{cosa, -sina, 0},
+                            {sina, cosa,  0},
+                            {0   ,    0,  1}
+                           });
+        break;
+    }
+
+    return *this;
+}
+
 template <typename T>
 Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 {

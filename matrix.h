@@ -4,6 +4,11 @@
 #include <stdint.h>
 #include <initializer_list>
 
+enum class Axis
+{
+    X, Y, Z
+};
+
 template <typename T = double> class Matrix
 {
 private:
@@ -23,6 +28,8 @@ public:
     Matrix<T> getTransposed() const;
     Matrix<T> getInversed() const;
     T determinant() const;
+
+    Matrix<T> &rotate(Axis axis, double angle);
 
     Matrix<T> &normalizeValues(int prec = 9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
