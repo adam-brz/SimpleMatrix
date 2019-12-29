@@ -24,8 +24,7 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 CONFIG += c++11
 
-SOURCES += \
-    Tests/Matrix/assign_test.cpp
+SOURCES +=
 
 
 HEADERS += \
@@ -55,7 +54,8 @@ contains(DEFINES, RUN_TEST) {
         Tests/Matrix/multiply_test.cpp \
         Tests/Matrix/reverse_elements_test.cpp \
         Tests/Matrix/rotate_test.cpp \
-        Tests/Matrix/compare_test.cpp
+        Tests/Matrix/compare_test.cpp \
+        Tests/Matrix/assign_test.cpp
 }
 
 else:contains(DEFINES, RUN_TIME_TEST) {
