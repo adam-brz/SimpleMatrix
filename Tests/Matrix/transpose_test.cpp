@@ -28,5 +28,7 @@ TEST_CASE("Transposing matrixes", "[Matrix]")
     REQUIRE(mat2.getTransposed() == mat2_expected);
     REQUIRE(mat3.getTransposed() == mat3_expected);
     REQUIRE(mat4.getTransposed() == mat4_expected);
+
+    REQUIRE(Matrix<>({}).getTransposed() == Matrix<>({}));
 }
 #endif

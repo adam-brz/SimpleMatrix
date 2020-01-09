@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <initializer_list>
 
+template <typename T>
+class Vector;
+
 template <typename T = double>
 class Matrix
 {
@@ -18,10 +21,14 @@ public:
     static Matrix<T> skewSymmetric(const Matrix<T> &vector);
 
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
-    Matrix(uint8_t rowCount, uint8_t columnCount);
+    Matrix(uint8_t rowCount, uint8_t columnCount, const T& defaultValue = T());
     Matrix(const Matrix<T> &matrix);
+    Matrix(const Vector<T> &vector);
     Matrix(Matrix<T> &&matrix);
     virtual ~Matrix();
+
+    Matrix<T> &transpose();
+    Matrix<T> &invert();
 
     Matrix<T> getTransposed() const;
     Matrix<T> getInversed() const;
@@ -59,7 +66,7 @@ public:
         matrix[row][column] = value;
     }
 
-    inline T get(uint8_t row, uint8_t column) const {
+    inline T &get(uint8_t row, uint8_t column) const {
         return matrix[row][column];
     }
 
@@ -95,7 +102,7 @@ public:
 private:
     void freeMemory();
     void allocMemory();
-    void initCells();
+    void initCells(const T& value = T());
 
     Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;

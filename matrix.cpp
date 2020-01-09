@@ -1,6 +1,8 @@
 #include "matrix.h"
 #include "matrixexception.h"
 
+#include "vector.h"
+
 #include <cstring>
 #include <cmath>
 #include <map>
@@ -63,13 +65,20 @@ Matrix<T>::Matrix(const Matrix<T> &matrix) :
         memcpy(this->matrix[i], matrix.matrix[i], columnCount*sizeof(T));
 }
 
+template<typename T>
+Matrix<T>::Matrix(const Vector<T> &vector) :
+    Matrix<T>(*(vector.matrix))
+{
+
+}
+
 template <typename T>
-Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount) :
+Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount, const T &defaultValue) :
     rowCount(rowCount),
     columnCount(columnCount)
 {
     allocMemory();
-    initCells();
+    initCells(defaultValue);
 }
 
 template <typename T>
@@ -81,11 +90,11 @@ void Matrix<T>::allocMemory()
 }
 
 template<typename T>
-void Matrix<T>::initCells()
+void Matrix<T>::initCells(const T &value)
 {
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            matrix[i][j] = T();
+            matrix[i][j] = value;
 }
 
 template <typename T>
@@ -102,6 +111,22 @@ template <typename T>
 Matrix<T>::~Matrix()
 {
     freeMemory();
+}
+
+template<typename T>
+Matrix<T> &Matrix<T>::transpose()
+{
+    Matrix<T> result(*this);
+    *this = result.getTransposed();
+    return *this;
+}
+
+template<typename T>
+Matrix<T> &Matrix<T>::invert()
+{
+    Matrix<T> result(*this);
+    *this = result.getInversed();
+    return *this;
 }
 
 template <typename T>

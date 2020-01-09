@@ -1,6 +1,12 @@
 #include "Tests/debugtoolbox.h"
 
-int main(int argc, char *argv[])
+#include "matrix.h"
+#include "vector.h"
+
+int main()
 {
-    return 0;
+    Matrix<> m = {{1}, {2}, {3}};
+    Vector<> v = Vector<>::fromMatrix(m);
+    cout << v.isColumn() << endl;
+    printMatrix(Matrix<>(m));
 }

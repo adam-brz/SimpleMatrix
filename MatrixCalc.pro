@@ -25,7 +25,8 @@ HEADERS += \
     matrix.h \
     Tests/catch.hpp \
     Tests/debugtoolbox.h \
-    matrixexception.h
+    matrixexception.h \
+    vector.h
 
 # Default rules for deployment.
 qnx: target.path = /tmp/$${TARGET}/bin
@@ -39,7 +40,6 @@ DISTFILES +=
 contains(DEFINES, RUN_TEST) {
     SOURCES +=  Tests/testmain.cpp \
         Tests/catch_test.cpp \
-        Tests/Matrix/creation_test.cpp \
         Tests/Matrix/determinant_test.cpp \
         Tests/Matrix/invert_test.cpp \
         Tests/Matrix/transpose_test.cpp \
@@ -49,7 +49,16 @@ contains(DEFINES, RUN_TEST) {
         Tests/Matrix/reverse_elements_test.cpp \
         Tests/Matrix/rotate_test.cpp \
         Tests/Matrix/compare_test.cpp \
-        Tests/Matrix/assign_test.cpp
+        Tests/Matrix/assign_test.cpp  \
+        Tests/Matrix/matrix_creation_test.cpp \
+        Tests/Vector/v_add_test.cpp \
+        Tests/Vector/v_assign_test.cpp \
+        Tests/Vector/v_compare_test.cpp \
+        Tests/Vector/v_creation_test.cpp \
+        Tests/Vector/v_get_test.cpp \
+        Tests/Vector/v_is_column_test.cpp \
+        Tests/Vector/v_size_test.cpp\
+        Tests/Vector/v_test_from_matrix.cpp
 }
 
 else:contains(DEFINES, RUN_TIME_TEST) {
