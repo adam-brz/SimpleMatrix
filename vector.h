@@ -20,12 +20,12 @@ public:
     Vector(const std::initializer_list<T> &argList, bool isColumnVector = false);
     Vector(int size, const T& default_value = T(), bool isColumnVector = false);
     Vector(const Vector<T> &vector);
-    Vector(const Matrix<T> &matrix);
     Vector(Vector<T> &&vector);
     virtual ~Vector();
 
     int size() const;
     bool isColumn() const;
+    T abs() const;
 
     T &operator[](int i);
     const T &operator[](int i) const;
@@ -33,16 +33,23 @@ public:
     Vector<T> &operator=(const Vector<T> &matrix);
     Vector<T> &operator=(Vector<T> &&vector);
 
-    Vector<T> operator+(const Vector<T> &matrix) const;
+    Vector<T> operator+(const Vector<T> &vector) const;
     Matrix<T> operator+(const Matrix<T> &matrix) const;
-    /*Vector<T> operator-(const Vector<T> &matrix) const;
-    Vector<T> operator*(const Vector<T> &matrix) const;
+
+    Vector<T> operator-(const Vector<T> &vector) const;
+    Matrix<T> operator-(const Matrix<T> &matrix) const;
+
+    Matrix<T> operator*(const Matrix<T> &vector) const;
     Vector<T> operator*(const T &value) const;
-    Vector<T> operator-() const;*/
+    Vector<T> operator-() const;
     bool operator==(const Vector<T> &matrix) const;
     operator const Matrix<T>&() const;
 
-    friend Matrix<T>;
+    friend Vector<T> operator*(const T &value,
+                               const Vector<T> &vector)
+    {
+        return vector * value;
+    }
 };
 
 #include "vector.cpp"

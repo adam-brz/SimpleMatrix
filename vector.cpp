@@ -17,7 +17,7 @@ Vector<T> Vector<T>::fromMatrix(const Matrix<T> &matrix)
 {
     Vector<T> vector(0);
     *(vector.matrix) = matrix;
-    vector.vector_size = std::max(matrix.getRowCount(), matrix.getRowCount());
+    vector.vector_size = std::max(matrix.getRowCount(), matrix.getColumnCount());
     vector.isColumnVector = matrix.getRowCount() > matrix.getColumnCount();
 
     return vector;
@@ -88,6 +88,17 @@ bool Vector<T>::isColumn() const
 }
 
 template<typename T>
+T Vector<T>::abs() const
+{
+    T result = T();
+
+    for(int i = 0; i < size(); ++i)
+        result += std::pow((*this)[i], 2);
+
+    return std::sqrt(result);
+}
+
+template<typename T>
 T &Vector<T>::operator[](int i)
 {
     int j = 0;
@@ -134,21 +145,45 @@ Vector<T> &Vector<T>::operator=(Vector<T> &&vector)
 template<typename T>
 Vector<T> Vector<T>::operator+(const Vector<T> &vector) const
 {
-    Vector<T> sum(*this);
-
-    if(size() != vector.size())
-        throw InvalidMathOperationException();
-
-    for(int i = 0; i < size(); ++i)
-        sum[i] += vector[i];
-
-    return sum;
+    return Vector<T>::fromMatrix(static_cast<Matrix<T>>(*this) + vector);
 }
 
 template<typename T>
 Matrix<T> Vector<T>::operator+(const Matrix<T> &matrix) const
 {
     return static_cast<Matrix<T>>(*this) + matrix;
+}
+
+template<typename T>
+Vector<T> Vector<T>::operator-(const Vector<T> &vector) const
+{
+    return fromMatrix(static_cast<Matrix<T>>(*this) - vector);
+}
+
+template<typename T>
+Matrix<T> Vector<T>::operator-(const Matrix<T> &matrix) const
+{
+    return static_cast<Matrix<T>>(*this) - matrix;
+}
+
+template<typename T>
+Matrix<T> Vector<T>::operator*(const Matrix<T> &vector) const
+{
+    return static_cast<Matrix<T>>(*this) * vector;
+}
+
+template<typename T>
+Vector<T> Vector<T>::operator*(const T &value) const
+{
+    return fromMatrix(static_cast<Matrix<T>>(*this) * value);
+}
+
+template<typename T>
+Vector<T> Vector<T>::operator-() const
+{
+    Vector<T> result(*this);
+    *result.matrix = -(*result.matrix);
+    return result;
 }
 
 template<typename T>

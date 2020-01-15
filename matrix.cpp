@@ -19,7 +19,7 @@ Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
 }
 
 template<typename T>
-Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
+Matrix<T> Matrix<T>::rotationMatrix(const Vector<T> &vector, double angle)
 {
     Matrix<T> skew_symmetric = Matrix<T>::skewSymmetric(vector);
 
@@ -29,16 +29,21 @@ Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
 }
 
 template<typename T>
-Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector)
+Matrix<T> Matrix<T>::skewSymmetric(const Vector<T> &vector)
 {
-    T x,y,z;
-    x = vector.get(0, 0);
-    y = vector.get(1, 0);
-    z = vector.get(2, 0);
+    T x = vector[0];
+    T y = vector[1];
+    T z = vector[2];
 
     return {{0, -z, y},
             {z, 0, -x},
             {-y, x, 0}};
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::fromVector(const Vector<T> &vector)
+{
+    return Matrix<T>(vector);
 }
 
 template <typename T>
@@ -63,13 +68,6 @@ Matrix<T>::Matrix(const Matrix<T> &matrix) :
 {
     for(int i = 0; i < rowCount; ++i)
         memcpy(this->matrix[i], matrix.matrix[i], columnCount*sizeof(T));
-}
-
-template<typename T>
-Matrix<T>::Matrix(const Vector<T> &vector) :
-    Matrix<T>(*(vector.matrix))
-{
-
 }
 
 template <typename T>
@@ -116,16 +114,14 @@ Matrix<T>::~Matrix()
 template<typename T>
 Matrix<T> &Matrix<T>::transpose()
 {
-    Matrix<T> result(*this);
-    *this = result.getTransposed();
+    *this = Matrix<T>(*this).getTransposed();
     return *this;
 }
 
 template<typename T>
 Matrix<T> &Matrix<T>::invert()
 {
-    Matrix<T> result(*this);
-    *this = result.getInversed();
+    *this =  Matrix<T>(*this).getInversed();
     return *this;
 }
 

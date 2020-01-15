@@ -6,8 +6,27 @@
 
 TEST_CASE("Vector from matrix", "[Vector]")
 {
-    Matrix<> m = {{1}, {2}, {3}};
+    SECTION("Column vector")
+    {
+        Matrix<> matrix = {{1}, {2}, {3}};
 
-    REQUIRE(Vector<>::isVector(m));
-    CHECK(Vector<>::fromMatrix(m) == Vector<>({1, 2, 3}, true));
+        REQUIRE(Vector<>::isVector(matrix));
+
+        Vector<> vector = Vector<>::fromMatrix(matrix);
+
+        CHECK(vector == Vector<>({1, 2, 3}, true));
+        CHECK(vector.isColumn());
+    }
+
+    SECTION("Row vector")
+    {
+        Matrix<> matrix = {{1, 2, 3}};
+
+        REQUIRE(Vector<>::isVector(matrix));
+
+        Vector<> vector = Vector<>::fromMatrix(matrix);
+
+        CHECK(vector == Vector<>({1, 2, 3}, false));
+        CHECK(vector.isColumn() == false);
+    }
 }

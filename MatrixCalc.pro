@@ -68,3 +68,9 @@ else:contains(DEFINES, RUN_TIME_TEST) {
 else {
     SOURCES += main.cpp
 }
+
+SOURCES += \
+    Tests/Vector/v_abs_test.cpp \
+    Tests/Vector/v_make_negative.cpp \
+    Tests/Vector/v_mul_test.cpp \
+    Tests/Vector/v_sub_test.cpp

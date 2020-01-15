@@ -5,8 +5,11 @@
 
 int main()
 {
-    Matrix<> m = {{1}, {2}, {3}};
-    Vector<> v = Vector<>::fromMatrix(m);
-    cout << v.isColumn() << endl;
-    printMatrix(Matrix<>(m));
+    Matrix<> matrix = {{1, 2, 3}};
+
+    Vector<>::isVector(matrix);
+
+    Vector<> vector = Vector<>::fromMatrix(matrix);
+
+     printMatrix(Matrix<>::fromVector(vector));
 }
