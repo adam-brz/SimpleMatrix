@@ -19,6 +19,7 @@ public:
 
     Vector(const std::initializer_list<T> &argList, bool isColumnVector = false);
     Vector(int size, const T& default_value = T(), bool isColumnVector = false);
+
     Vector(const Vector<T> &vector);
     Vector(Vector<T> &&vector);
     virtual ~Vector();
@@ -42,6 +43,7 @@ public:
     Matrix<T> operator*(const Matrix<T> &vector) const;
     Vector<T> operator*(const T &value) const;
     Vector<T> operator-() const;
+
     bool operator==(const Vector<T> &matrix) const;
     operator const Matrix<T>&() const;
 

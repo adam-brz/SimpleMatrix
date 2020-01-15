@@ -1,11 +1,9 @@
 #include "matrix.h"
-#include "matrixexception.h"
-
 #include "vector.h"
+#include "matrixexception.h"
 
 #include <cstring>
 #include <cmath>
-#include <map>
 
 template <typename T>
 Matrix<T> Matrix<T>::unitMatrix(uint8_t size)

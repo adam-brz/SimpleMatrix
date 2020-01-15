@@ -88,16 +88,17 @@ int main()
                      make_pair(test_time_sub, "operator-"),
                      make_pair(test_time_multiply, "operator*")};
 
-    auto mainStart = system_clock::now();;
+    auto mainStart = system_clock::now();
 
     for(auto func : funcTable)
     {
         double timeSum = 0;
 
-        cout << "> Function \"" << func.second << "\"" << endl;
         for(int i = 0; i < 10; ++i)
             timeSum += get_exec_time(func.first);
-        cout << "Time averange: " << timeSum / 10.0 << endl << endl;
+
+        cout << "> Function \"" << func.second << "\"" << endl
+             << "Time averange: " << timeSum / 10.0 << endl << endl;
     }
 
     duration<double> elapsed_time = system_clock::now() - mainStart;
