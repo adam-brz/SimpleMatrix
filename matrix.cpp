@@ -1,9 +1,9 @@
 #include "matrix.h"
+#include "vector.h"
 #include "matrixexception.h"
 
 #include <cstring>
 #include <cmath>
-#include <map>
 
 template <typename T>
 Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
@@ -17,7 +17,7 @@ Matrix<T> Matrix<T>::unitMatrix(uint8_t size)
 }
 
 template<typename T>
-Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
+Matrix<T> Matrix<T>::rotationMatrix(const Vector<T> &vector, double angle)
 {
     Matrix<T> skew_symmetric = Matrix<T>::skewSymmetric(vector);
 
@@ -27,16 +27,21 @@ Matrix<T> Matrix<T>::rotationMatrix(const Matrix<T> &vector, double angle)
 }
 
 template<typename T>
-Matrix<T> Matrix<T>::skewSymmetric(const Matrix<T> &vector)
+Matrix<T> Matrix<T>::skewSymmetric(const Vector<T> &vector)
 {
-    T x,y,z;
-    x = vector.get(0, 0);
-    y = vector.get(1, 0);
-    z = vector.get(2, 0);
+    T x = vector[0];
+    T y = vector[1];
+    T z = vector[2];
 
     return {{0, -z, y},
             {z, 0, -x},
             {-y, x, 0}};
+}
+
+template<typename T>
+Matrix<T> Matrix<T>::fromVector(const Vector<T> &vector)
+{
+    return Matrix<T>(vector);
 }
 
 template <typename T>
@@ -64,12 +69,12 @@ Matrix<T>::Matrix(const Matrix<T> &matrix) :
 }
 
 template <typename T>
-Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount) :
+Matrix<T>::Matrix(uint8_t rowCount, uint8_t columnCount, const T &defaultValue) :
     rowCount(rowCount),
     columnCount(columnCount)
 {
     allocMemory();
-    initCells();
+    initCells(defaultValue);
 }
 
 template <typename T>
@@ -81,11 +86,11 @@ void Matrix<T>::allocMemory()
 }
 
 template<typename T>
-void Matrix<T>::initCells()
+void Matrix<T>::initCells(const T &value)
 {
     for(int i = 0; i < rowCount; ++i)
         for(int j = 0; j < columnCount; ++j)
-            matrix[i][j] = T();
+            matrix[i][j] = value;
 }
 
 template <typename T>
@@ -102,6 +107,20 @@ template <typename T>
 Matrix<T>::~Matrix()
 {
     freeMemory();
+}
+
+template<typename T>
+Matrix<T> &Matrix<T>::transpose()
+{
+    *this = Matrix<T>(*this).getTransposed();
+    return *this;
+}
+
+template<typename T>
+Matrix<T> &Matrix<T>::invert()
+{
+    *this =  Matrix<T>(*this).getInversed();
+    return *this;
 }
 
 template <typename T>

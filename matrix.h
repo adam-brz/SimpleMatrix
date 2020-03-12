@@ -4,6 +4,9 @@
 #include <stdint.h>
 #include <initializer_list>
 
+template <typename T>
+class Vector;
+
 template <typename T = double>
 class Matrix
 {
@@ -14,14 +17,18 @@ private:
 
 public:
     static Matrix<T> unitMatrix(uint8_t size);
-    static Matrix<T> rotationMatrix(const Matrix<T> &vector, double angle);
-    static Matrix<T> skewSymmetric(const Matrix<T> &vector);
+    static Matrix<T> rotationMatrix(const Vector<T> &vector, double angle);
+    static Matrix<T> skewSymmetric(const Vector<T> &vector);
+    static Matrix<T> fromVector(const Vector<T> &vector);
 
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
-    Matrix(uint8_t rowCount, uint8_t columnCount);
+    Matrix(uint8_t rowCount, uint8_t columnCount, const T& defaultValue = T());
     Matrix(const Matrix<T> &matrix);
     Matrix(Matrix<T> &&matrix);
     virtual ~Matrix();
+
+    Matrix<T> &transpose();
+    Matrix<T> &invert();
 
     Matrix<T> getTransposed() const;
     Matrix<T> getInversed() const;
@@ -59,7 +66,7 @@ public:
         matrix[row][column] = value;
     }
 
-    inline T get(uint8_t row, uint8_t column) const {
+    inline T &get(uint8_t row, uint8_t column) const {
         return matrix[row][column];
     }
 
@@ -95,7 +102,7 @@ public:
 private:
     void freeMemory();
     void allocMemory();
-    void initCells();
+    void initCells(const T& value = T());
 
     Matrix<T> removeRowAndColumn(uint8_t row, uint8_t column) const;
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
@@ -114,16 +121,16 @@ template <typename T = double>
 class Axis
 {
 public:
-    static const Matrix<T> X() {
-        return {{1}, {0}, {0}};
+    static const Vector<T> X() {
+        return {1, 0, 0};
     }
 
-    static const Matrix<T> Y() {
-        return {{0}, {1}, {0}};
+    static const Vector<T> Y() {
+        return {0, 1, 0};
     }
 
-    static const Matrix<T> Z() {
-        return {{0}, {0}, {1}};
+    static const Vector<T> Z() {
+        return {0, 0, 1};
     }
 };
 

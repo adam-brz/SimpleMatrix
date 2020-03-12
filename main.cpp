@@ -1,6 +1,9 @@
 #include "Tests/debugtoolbox.h"
 
-int main(int argc, char *argv[])
+#include "matrix.h"
+#include "vector.h"
+
+int main()
 {
     return 0;
 }
