@@ -22,7 +22,7 @@ public:
     static Matrix<T> fromVector(const Vector<T> &vector);
 
     Matrix(const std::initializer_list<std::initializer_list<T>> &argList);
-    Matrix(uint8_t rowCount, uint8_t columnCount, const T& defaultValue = T());
+    Matrix(uint8_t rowCount = 3, uint8_t columnCount = 3, const T& defaultValue = T());
     Matrix(const Matrix<T> &matrix);
     Matrix(Matrix<T> &&matrix);
     virtual ~Matrix();
@@ -34,6 +34,7 @@ public:
     Matrix<T> getInversed() const;
     T determinant() const;
 
+    Matrix<T> &round(const T &minimal = 1E-9);
     Matrix<T> &roundToZeroIfNear(const T &maxDelta = 1E-9);
     Matrix<T> &operator=(const Matrix<T> &matrix);
     Matrix<T> &operator=(Matrix<T> &&matrix);
@@ -108,7 +109,7 @@ private:
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
 
     inline bool almostEqual(const T &val1, const T &val2, const T &maxDelta) const {
-        return val1 - val2 < maxDelta && val2 - val1 < maxDelta;
+        return abs(val1 - val2) < maxDelta;
     }
 
     inline bool hasTheSameSize(const Matrix<T> &matrix) const {

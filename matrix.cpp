@@ -184,6 +184,15 @@ T Matrix<T>::determinant() const
     return sum;
 }
 
+template<typename T>
+Matrix<T> &Matrix<T>::round(const T &minimal)
+{
+    for(int i = 0; i < rowCount; ++i)
+        for(int j = 0; j < columnCount; ++j)
+            set(i, j, rint(get(i, j) / minimal) * minimal);
+    return *this;
+}
+
 template <typename T>
 Matrix<T> Matrix<T>::removeRowAndColumn(uint8_t row, uint8_t column) const
 {
