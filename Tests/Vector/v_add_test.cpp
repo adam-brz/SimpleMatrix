@@ -26,19 +26,19 @@ TEST_CASE("Vector addition", "[Vector]")
 
     SECTION("matrix + vector")
     {
-        Vector<> v1({1, 2, 3}, true);
+        Vector<> v1({1, 2, 3}, VectorType::ColumnVector);
         Matrix<> v2 = {{1}, {2}, {3}};
 
-        Vector<> expected({2, 4, 6}, true);
+        Vector<> expected({2, 4, 6}, VectorType::ColumnVector);
         CHECK(v2 + v1 == expected);
     }
 
     SECTION("vector + matrix")
     {
-        Vector<> v1({1, 2, 3}, true);
+        Vector<> v1({1, 2, 3}, VectorType::ColumnVector);
         Matrix<> v2 = {{1}, {2}, {3}};
 
-        Vector<> expected({2, 4, 6}, true);
+        Vector<> expected({2, 4, 6}, VectorType::ColumnVector);
         CHECK(v1 + v2 == expected);
     }
 }

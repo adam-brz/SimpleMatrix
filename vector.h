@@ -6,6 +6,11 @@
 template <typename T>
 class Matrix;
 
+enum class VectorType : unsigned char {
+    RowVector    = 0,
+    ColumnVector = 1
+};
+
 template <typename T = double>
 class Vector
 {
@@ -17,8 +22,12 @@ public:
     static bool isVector(const Matrix<T> &matrix);
     static Vector<T> fromMatrix(const Matrix<T> &matrix);
 
-    Vector(const std::initializer_list<T> &argList, bool isColumnVector = false);
-    Vector(int size = 3, const T& default_value = T(), bool isColumnVector = false);
+    Vector(const std::initializer_list<T> &argList,
+           VectorType vectorType = VectorType::RowVector);
+
+    Vector(int size = 3,
+           const T& default_value = T(),
+           VectorType vectorType = VectorType::RowVector);
 
     Vector(const Vector<T> &vector);
     Vector(Vector<T> &&vector);

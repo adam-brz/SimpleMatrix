@@ -23,19 +23,19 @@ TEST_CASE("Vector subtraction test", "[Vector]")
 
     SECTION("matrix - vector")
     {
-        Vector<> v1({1, 2, 3}, true);
+        Vector<> v1({1, 2, 3}, VectorType::ColumnVector);
         Matrix<> v2 = {{1}, {5}, {3}};
 
-        Vector<> expected({0, 3, 0}, true);
+        Vector<> expected({0, 3, 0}, VectorType::ColumnVector);
         CHECK(v2 - v1 == expected);
     }
 
     SECTION("vector - matrix")
     {
-        Vector<> v1({1, 2, 3}, true);
+        Vector<> v1({1, 2, 3}, VectorType::ColumnVector);
         Matrix<> v2 = {{1}, {5}, {3}};
 
-        Vector<> expected({0, -3, 0}, true);
+        Vector<> expected({0, -3, 0}, VectorType::ColumnVector);
         CHECK(v1 - v2 == expected);
     }
 }

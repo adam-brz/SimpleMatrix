@@ -16,17 +16,6 @@ TEST_CASE("Initializing empty matrix", "[Matrix]")
         CHECK(matrix.isInvertible() == false);
     }
 
-    SECTION("Initialization with initializer list")
-    {
-        Matrix<> matrix = {};
-
-        CHECK(matrix.getColumnCount() == 0);
-        CHECK(matrix.getRowCount() == 0);
-
-        CHECK(matrix.hasDeterminant() == true);
-        CHECK(matrix.isInvertible() == false);
-    }
-
     SECTION("Making copy of empty matrix")
     {
         Matrix<> original(0, 0);

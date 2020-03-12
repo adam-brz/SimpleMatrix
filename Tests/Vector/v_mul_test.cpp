@@ -6,7 +6,7 @@ TEST_CASE("Vector multiplication test", "[Vector]")
     SECTION("vector * vector")
     {
         Vector<> v1 = {1, 2, 3};
-        Vector<> v2({3, 4, 1}, true);
+        Vector<> v2({3, 4, 1}, VectorType::ColumnVector);
 
         Matrix<> expected = {{3, 6, 9},
                              {4, 8, 12},
@@ -30,8 +30,8 @@ TEST_CASE("Vector multiplication test", "[Vector]")
                            {1, 1, 1},
                            {4, 4, 2}};
 
-        Vector<> vector({1, 1, 1}, true);
-        Vector<> expected({3, 3, 10}, true);
+        Vector<> vector({1, 1, 1}, VectorType::ColumnVector);
+        Vector<> expected({3, 3, 10}, VectorType::ColumnVector);
 
         CHECK(matrix * vector == expected);
     }

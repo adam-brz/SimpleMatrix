@@ -25,9 +25,9 @@ Vector<T> Vector<T>::fromMatrix(const Matrix<T> &matrix)
 }
 
 template<typename T>
-Vector<T>::Vector(const std::initializer_list<T> &argList, bool isColumnVector) :
+Vector<T>::Vector(const std::initializer_list<T> &argList, VectorType vectorType) :
     vector_size(argList.size()),
-    isColumnVector(isColumnVector)
+    isColumnVector((bool)(vectorType))
 {
     matrix = new Matrix<T>(1, vector_size);
 
@@ -39,9 +39,9 @@ Vector<T>::Vector(const std::initializer_list<T> &argList, bool isColumnVector) 
 }
 
 template<typename T>
-Vector<T>::Vector(int size, const T &default_value, bool isColumnVector) :
+Vector<T>::Vector(int size, const T &default_value, VectorType vectorType) :
     vector_size(size),
-    isColumnVector(isColumnVector)
+    isColumnVector((bool)(vectorType))
 {
     int i = 1;
     int j = vector_size;
