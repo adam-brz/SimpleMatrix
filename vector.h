@@ -18,7 +18,7 @@ public:
     static Vector<T> fromMatrix(const Matrix<T> &matrix);
 
     Vector(const std::initializer_list<T> &argList, bool isColumnVector = false);
-    Vector(int size, const T& default_value = T(), bool isColumnVector = false);
+    Vector(int size = 3, const T& default_value = T(), bool isColumnVector = false);
 
     Vector(const Vector<T> &vector);
     Vector(Vector<T> &&vector);
@@ -27,6 +27,9 @@ public:
     int size() const;
     bool isColumn() const;
     T abs() const;
+
+    Vector<T> &round(const T &minimum = 1E-9);
+    Vector<T> &transpose();
 
     T &operator[](int i);
     const T &operator[](int i) const;
@@ -42,7 +45,13 @@ public:
 
     Matrix<T> operator*(const Matrix<T> &vector) const;
     Vector<T> operator*(const T &value) const;
+    Vector<T> operator/(const T &value) const;
     Vector<T> operator-() const;
+
+    Vector<T> &operator*=(const T &value);
+    Vector<T> &operator/=(const T &value);
+    Vector<T> &operator+=(const Vector<T> &vector);
+    Vector<T> &operator-=(const Vector<T> &vector);
 
     bool operator==(const Vector<T> &matrix) const;
     operator const Matrix<T>&() const;

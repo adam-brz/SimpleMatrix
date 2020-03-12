@@ -3,6 +3,7 @@
 #include "matrixexception.h"
 
 #include <algorithm>
+#include <cmath>
 
 template<typename T>
 bool Vector<T>::isVector(const Matrix<T> &matrix)
@@ -99,6 +100,20 @@ T Vector<T>::abs() const
 }
 
 template<typename T>
+Vector<T> &Vector<T>::round(const T &minimum)
+{
+    matrix->round(minimum);
+    return *this;
+}
+
+template<typename T>
+Vector<T> &Vector<T>::transpose()
+{
+    matrix->transpose();
+    isColumnVector = !isColumnVector;
+}
+
+template<typename T>
 T &Vector<T>::operator[](int i)
 {
     int j = 0;
@@ -167,6 +182,12 @@ Matrix<T> Vector<T>::operator-(const Matrix<T> &matrix) const
 }
 
 template<typename T>
+Vector<T> Vector<T>::operator/(const T &value) const
+{
+    return *this * (1/value);
+}
+
+template<typename T>
 Matrix<T> Vector<T>::operator*(const Matrix<T> &vector) const
 {
     return static_cast<Matrix<T>>(*this) * vector;
@@ -184,6 +205,30 @@ Vector<T> Vector<T>::operator-() const
     Vector<T> result(*this);
     *result.matrix = -(*result.matrix);
     return result;
+}
+
+template<typename T>
+Vector<T> &Vector<T>::operator*=(const T &value)
+{
+    return *this = *this * value;
+}
+
+template<typename T>
+Vector<T> &Vector<T>::operator/=(const T &value)
+{
+    return *this = *this / value;
+}
+
+template<typename T>
+Vector<T> &Vector<T>::operator+=(const Vector<T> &vector)
+{
+    return *this = *this + vector;
+}
+
+template<typename T>
+Vector<T> &Vector<T>::operator-=(const Vector<T> &vector)
+{
+    return *this = *this - vector;
 }
 
 template<typename T>
