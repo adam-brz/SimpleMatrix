@@ -9,12 +9,13 @@ using namespace std;
 template <typename T>
 void printMatrix(const Matrix<T> &matrix)
 {
-    for(uint8_t i = 0; i < matrix.getRowCount(); ++i)
+    Matrix<T> cpy(matrix);
+    cpy.roundToZeroIfNear();
+
+    for(uint8_t i = 0; i < cpy.getRowCount(); ++i)
     {
-        for(uint8_t j = 0; j < matrix.getColumnCount(); ++j)
-        {
-            cout << matrix.get(i, j) << " ";
-        }
+        for(uint8_t j = 0; j < cpy.getColumnCount(); ++j)
+            cout << cpy.get(i, j) << " ";
         cout << "\n";
     }
 }

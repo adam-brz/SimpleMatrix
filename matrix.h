@@ -101,7 +101,7 @@ private:
     inline T getAlgebraicComplement(uint8_t row, uint8_t column) const;
 
     inline bool almostEqual(const T &val1, const T &val2, const T &maxDelta) const {
-        return abs(val1 - val2) < maxDelta;
+        return val1 - val2 < maxDelta && val2 - val1 < maxDelta;
     }
 
     inline bool hasTheSameSize(const Matrix<T> &matrix) const {
