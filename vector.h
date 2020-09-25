@@ -37,8 +37,11 @@ public:
     bool isColumn() const;
     T abs() const;
 
+    Vector<T> &normalize();
     Vector<T> &round(const T &minimum = 1E-9);
     Vector<T> &transpose();
+
+    bool almostEqual(const Vector<T> &vector, const T &maxDelta = 1E-15) const;
 
     T &operator[](int i);
     const T &operator[](int i) const;
@@ -62,13 +65,20 @@ public:
     Vector<T> &operator+=(const Vector<T> &vector);
     Vector<T> &operator-=(const Vector<T> &vector);
 
-    bool operator==(const Vector<T> &matrix) const;
+    bool operator==(const Vector<T> &vector) const;
+    bool operator!=(const Vector<T> &vector) const;
+
     operator const Matrix<T>&() const;
 
     friend Vector<T> operator*(const T &value,
                                const Vector<T> &vector)
     {
         return vector * value;
+    }
+
+private:
+    inline bool almostEqualNum(const T &val1, const T &val2, const T &maxDelta) const {
+        return (val1 - val2 < maxDelta) &&  (val2 - val1 < maxDelta);
     }
 };
 

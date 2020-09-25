@@ -1,3 +1,6 @@
+#ifndef VECTOR_CPP
+#define VECTOR_CPP
+
 #include "vector.h"
 #include "matrix.h"
 #include "matrixexception.h"
@@ -100,6 +103,12 @@ T Vector<T>::abs() const
 }
 
 template<typename T>
+Vector<T> &Vector<T>::normalize()
+{
+    return *this /= abs();
+}
+
+template<typename T>
 Vector<T> &Vector<T>::round(const T &minimum)
 {
     matrix->round(minimum);
@@ -111,6 +120,19 @@ Vector<T> &Vector<T>::transpose()
 {
     matrix->transpose();
     isColumnVector = !isColumnVector;
+}
+
+template<typename T>
+bool Vector<T>::almostEqual(const Vector<T> &vector, const T &maxDelta) const
+{
+    if(vector_size != vector.size() || (isColumn() ^ vector.isColumn()))
+        return false;
+
+    for(int i = 0; i < vector_size; ++i)
+        if(!almostEqualNum((*this)[i], vector[i], maxDelta))
+            return false;
+
+    return true;
 }
 
 template<typename T>
@@ -245,7 +267,15 @@ bool Vector<T>::operator==(const Vector<T> &vector) const
 }
 
 template<typename T>
+bool Vector<T>::operator!=(const Vector<T> &vector) const
+{
+    return !(*this == vector);
+}
+
+template<typename T>
 Vector<T>::operator const Matrix<T> &() const
 {
     return *matrix;
 }
+
+#endif

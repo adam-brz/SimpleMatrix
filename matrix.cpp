@@ -1,3 +1,6 @@
+#ifndef MATRIX_CPP
+#define MATRIX_CPP
+
 #include "matrix.h"
 #include "vector.h"
 #include "matrixexception.h"
@@ -346,3 +349,5 @@ bool Matrix<T>::operator==(const Matrix<T> &matrix) const
 
     return true;
 }
+
+#endif
