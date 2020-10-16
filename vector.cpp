@@ -169,6 +169,8 @@ Vector<T> &Vector<T>::operator=(const Vector<T> &vector)
 template<typename T>
 Vector<T> &Vector<T>::operator=(Vector<T> &&vector)
 {
+    delete matrix;
+    
     matrix = vector.matrix;
     vector_size = vector.size();
     isColumnVector = vector.isColumn();
