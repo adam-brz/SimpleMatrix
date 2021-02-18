@@ -1,5 +1,9 @@
 #include "Tests/catch.hpp"
 #include "matrix.h"
+#include "Axis.h"
+
+#define _USE_MATH_DEFINES
+#include <cmath>
 
 TEST_CASE("Rotate matrix in x axis", "[Matrix]")
 {

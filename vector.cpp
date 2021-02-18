@@ -19,7 +19,7 @@ bool Vector<T>::isVector(const Matrix<T> &matrix)
 template<typename T>
 Vector<T> Vector<T>::fromMatrix(const Matrix<T> &matrix)
 {
-    Vector<T> vector(0);
+    Vector<T> vector(1);
     *(vector.matrix) = matrix;
     vector.vector_size = std::max(matrix.getRowCount(), matrix.getColumnCount());
     vector.isColumnVector = matrix.getRowCount() > matrix.getColumnCount();
