@@ -89,9 +89,7 @@ void Matrix<T>::allocMemory()
 template <typename T>
 void Matrix<T>::initCells(const T &value)
 {
-    for (int i = 0; i < rowCount; ++i)
-        for (int j = 0; j < columnCount; ++j)
-            this->set(i, j, value);
+    memset(matrix, value, rowCount*columnCount*sizeof(T));
 }
 
 template <typename T>
@@ -241,7 +239,7 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T> &matrix) const
 
     for (int i = 0; i < rowCount; ++i)
         for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, get(i, j) - matrix.get(i, j));
+            result.set(i, j, this->get(i, j) - matrix.get(i, j));
 
     return result;
 }
@@ -256,7 +254,7 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &matrix) const
 
     for (int i = 0; i < rowCount; ++i)
         for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, get(i, j) + matrix.get(i, j));
+            result.set(i, j, this->get(i, j) + matrix.get(i, j));
 
     return result;
 }
@@ -268,17 +266,16 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
         throw InvalidMathOperationException();
 
     Matrix<T> result(getRowCount(), matrix.getColumnCount());
-    T quotientsSum = 0;
-
+    
     for (int row = 0; row < getRowCount(); ++row)
     {
         for (int column = 0; column < matrix.getColumnCount(); ++column)
         {
+            T quotientsSum = 0;
             for (int i = 0; i < getColumnCount(); ++i)
-                quotientsSum += get(row, i) * matrix.get(i, column);
+                quotientsSum += this->get(row, i) * matrix.get(i, column);
 
             result.set(row, column, quotientsSum);
-            quotientsSum = 0;
         }
     }
 
