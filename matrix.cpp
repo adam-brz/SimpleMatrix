@@ -223,9 +223,9 @@ Matrix<T> Matrix<T>::operator-() const
 {
     Matrix<T> result(rowCount, columnCount);
 
-    for (int i = 0; i < rowCount; ++i)
-        for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, -get(i, j));
+    for (int i = 0; i < rowCount*columnCount; ++i)
+        result.matrix[i] = -this->matrix[i];
+        
     return result;
 }
 
@@ -235,11 +235,10 @@ Matrix<T> Matrix<T>::operator-(const Matrix<T> &matrix) const
     if (!this->hasTheSameSize(matrix))
         throw InvalidMathOperationException();
 
-    Matrix<T> result(rowCount, columnCount);
+    Matrix<T> result(*this);
 
-    for (int i = 0; i < rowCount; ++i)
-        for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, this->get(i, j) - matrix.get(i, j));
+    for (int i = 0; i < rowCount*columnCount; ++i)
+        result.matrix[i] -= matrix.matrix[i]; 
 
     return result;
 }
@@ -250,11 +249,10 @@ Matrix<T> Matrix<T>::operator+(const Matrix<T> &matrix) const
     if (!this->hasTheSameSize(matrix))
         throw InvalidMathOperationException();
 
-    Matrix<T> result(rowCount, columnCount);
-
-    for (int i = 0; i < rowCount; ++i)
-        for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, this->get(i, j) + matrix.get(i, j));
+    Matrix<T> result(*this);
+    
+    for (int i = 0; i < rowCount*columnCount; ++i)
+        result.matrix[i] += matrix.matrix[i]; 
 
     return result;
 }
@@ -285,11 +283,10 @@ Matrix<T> Matrix<T>::operator*(const Matrix<T> &matrix) const
 template <typename T>
 Matrix<T> Matrix<T>::operator*(const T &value) const
 {
-    Matrix<T> result(rowCount, columnCount);
+    Matrix<T> result(*this);
 
-    for (int i = 0; i < rowCount; ++i)
-        for (int j = 0; j < columnCount; ++j)
-            result.set(i, j, get(i, j) * value);
+    for (int i = 0; i < rowCount*columnCount; ++i)
+        result.matrix[i] *= value;
 
     return result;
 }
