@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include <chrono>
 #include <cmath>
@@ -9,7 +8,7 @@
 using namespace std;
 using namespace std::chrono;
 
-constexpr int NO_REPEATS = 100000;
+constexpr int NO_REPEATS = 10000;
 
 void test_time_det()
 {

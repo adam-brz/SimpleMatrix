@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -38,4 +36,3 @@ TEST_CASE("Inversing matrixes", "[Matrix]")
     }
 }
 
-#endif

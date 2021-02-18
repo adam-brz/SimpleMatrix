@@ -1,6 +1,6 @@
-#include "Tests/catch.hpp"
+#include "catch.hpp"
 #include "matrix.h"
-#include "Tests/debugtoolbox.h"
+#include "debugtoolbox.h"
 
 TEST_CASE("Assign by reference")
 {

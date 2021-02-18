@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -25,5 +23,3 @@ TEST_CASE("Comparing matrixes", "[Matrix]")
     REQUIRE_FALSE(mat1 == mat3);
     REQUIRE_FALSE(mat2 == mat4);
 }
-
-#endif

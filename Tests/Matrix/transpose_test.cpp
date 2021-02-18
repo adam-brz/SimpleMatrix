@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -31,4 +29,3 @@ TEST_CASE("Transposing matrixes", "[Matrix]")
 
     REQUIRE(Matrix<>({}).getTransposed() == Matrix<>({}));
 }
-#endif

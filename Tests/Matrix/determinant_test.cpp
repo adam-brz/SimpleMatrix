@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -74,5 +72,3 @@ TEST_CASE("Checking possibility of calculating determinant", "[matrix]")
                                   {19, 17, 1}}).hasDeterminant());
 
 }
-
-#endif

@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -36,5 +34,3 @@ TEST_CASE("Adding matrixes", "[Matrix]")
         REQUIRE(mat3 + mat4 == expected2);
     }
 }
-
-#endif

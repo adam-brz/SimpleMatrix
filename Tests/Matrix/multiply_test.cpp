@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -69,5 +67,3 @@ TEST_CASE("Multiplying matrixes with single row/column", "[Matrix]")
         CHECK(mat1 * mat2 == expected);
     }
 }
-
-#endif

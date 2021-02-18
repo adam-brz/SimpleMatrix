@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -62,5 +60,3 @@ TEST_CASE("Test construction with reference", "[Matrix]")
     Matrix<> matrix(matrix2);
     CHECK(matrix == matrix2);
 }
-
-#endif //RUN_TEST

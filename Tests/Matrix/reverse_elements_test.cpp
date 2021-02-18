@@ -1,5 +1,3 @@
-#ifdef RUN_TEST
-
 #include "Tests/catch.hpp"
 #include "matrix.h"
 
@@ -23,5 +21,3 @@ TEST_CASE("Reverse matrix elements", "[Matrix]")
     REQUIRE(-mat2 == mat2_expected);
     REQUIRE(-mat3 == mat3_expected);
 }
-
-#endif
